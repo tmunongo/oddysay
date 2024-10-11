@@ -6,6 +6,7 @@ use views::home::HomePage;
 use views::chapter::ChapterPage;
 
 mod views;
+mod database;
 
 #[component]
 pub fn App() -> impl IntoView {

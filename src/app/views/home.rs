@@ -1,7 +1,5 @@
 use leptos::{component, create_signal, view, IntoView, SignalUpdate};
 
-
-
 #[component]
 pub fn HomePage() -> impl IntoView {
     // Creates a reactive value to update the button

@@ -6,6 +6,8 @@ async fn main() {
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use oddysay::app::*;
     use oddysay::fileserv::file_and_error_handler;
+    use sqlx::sqlite::SqlitePoolOptions;
+    use crate::app::database::database::ssr::db;
 
     // Setting get_configuration(None) means we'll be using cargo-leptos's env values
     // For deployment these variables are:
@@ -16,6 +18,12 @@ async fn main() {
     let leptos_options = conf.leptos_options;
     let addr = leptos_options.site_addr;
     let routes = generate_route_list(App);
+
+    let mut conn = db().await.expect("couldn't connect to DB");
+    sqlx::migrate!()
+        .run(&mut conn)
+        .await
+        .expect("could not run SQLx migrations");
 
     // build our application with a route
     let app = Router::new()

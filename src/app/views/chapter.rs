@@ -1,9 +1,25 @@
-use leptos::{component, view, IntoView, Params, SignalWith};
+use leptos::{component, server, view, IntoView, Params, ServerFnError, SignalWith};
 use leptos_router::{use_params_map, Params};
+use serde::{Serialize, Deserialize};
+use crate::app::database::database::ssr::db;
 
-#[derive(Debug, Params, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, Params, PartialEq)]
 struct Query {
     chapter: Option<String>,
+}
+
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
+pub struct Chapter {
+    slug: String,
+    title: String,
+    content: String,
+}
+
+#[server(ChapterPage, "/api/:slug")]
+pub async fn get_chapter_page(query: Query) -> Result<Chapter, ServerFnError> {
+    let mut conn = db.conn().await?;
+
+
 }
 
 #[component]
